@@ -8,6 +8,22 @@
 </head>
 <body>
     <h1>Hello World</h1>
+      <div class="container" id="form-container">
+        <form id="add-game-form" style="">
+          <h3>Add a New Game</h3>
+  
+          <input type="text" name="title" value="" placeholder="Enter a game's title..." class="input-text">
+          <br>
+          <input type="text" name="image" value="" placeholder="Enter a game's image URL..." class="input-text">
+          <br>
+          <input type="text" name="release-year" value="" placeholder="Enter a game's release year..." class="input-text">
+          <br>
+          <input type="text" name="genre" value="" placeholder="Enter a game's genre..." class="input-text">
+          <br>
+          <input type="submit" name="submit" value="Create New Game" class="submit">
+        </form>
+      </div>
+      <p style='text-align:center' >Have a new game you'd like to add to our database? <button id='new-game-btn'>Add a new game!</button></p>
     
 </body>
 <script src="index.js"></script>
