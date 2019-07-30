@@ -3,6 +3,9 @@ const GAMES_URL = `http://localhost:3000/api/v1/games/`
 const LIKES_URL = `http://localhost:3000/api/v1/likes`
 const COMMENTS_URL = `http://localhost:3000/api/v1/comments`
 document.addEventListener("click", handleClick)
+const addBtn = document.getElementById("new-game-btn")
+const formContainer = document.getElementById('form-container')
+let addGame = false
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -48,6 +51,17 @@ function showMore(game){
     
     `
 }
+
+addBtn.addEventListener('click', () => {
+    // hide & seek with the form
+    addGame = !addGame
+    if (addGame) {
+      formContainer.style.display = 'block'
+      // submit listener here
+    } else {
+      formContainer.style.display = 'none'
+    }
+  })
 
 
 
