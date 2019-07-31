@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", setUpPage)
 const GAMES_URL = `http://localhost:3000/api/v1/games/`
-const LIKES_URL = `http://localhost:3000/api/v1/likes`
-const COMMENTS_URL = `http://localhost:3000/api/v1/comments`
+const LIKES_URL = `http://localhost:3000/api/v1/likes/`
+const COMMENTS_URL = `http://localhost:3000/api/v1/comments/`
 document.addEventListener("click", handleClick)
 const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
+const addGameForm = document.getElementById("add-game-form")
+addGameForm.addEventListener("submit", handleSubmit)
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -27,29 +29,44 @@ function handleClick(e){
        fetch(GAMES_URL + ID)
        .then(res => res.json())
        .then(game => showMore(game))
+    } else if (e.target.className == "deleteCmntBtn"){
+        let ID = e.target.dataset.id
+        let parent = e.target.parentElement
+        parent.remove()
+        fetch(COMMENTS_URL + ID, {
+            method: "DELETE"
+        })
+        
     }
 }
 
 function showMore(game){
-    console.log("game", game)
-    console.log("comments", game.comments)
-    console.log("likes", game.likes)
+    let id = game.id
+    
     let showPanel = document.querySelector("#show-panel")
     showPanel.innerHTML = ""
     showPanel.innerHTML = `
     <div data-game-id="${game.id}" class="card" style="width: 18rem;">
-    <div class="card-body">
-      <img src=${game.image} class="card-img-top" alt="...">
-      <h5 class="card-title">${game.title}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">${game.genre}</h6>
-      <p class="card-text">${game.description}</p>
-      <ul class="list-group list-group-flush">
-      <li class="list-group-item">Release Date: ${game.release_date}</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+        <img src=${game.image} class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">${game.title}</h5>
+            <p class="card-text">Genre: ${game.genre}</p>
+            <p class="card-text">Release Year: ${game.release_date}</p>
+            <p class ="card-text">Likes: ${game.likes.length}</p>
+            <h6 class="card-text">Comments:</h6>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Create New Comment</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </div>
+        <ul id="comment-list" class="list-group list-group-flush">
+            ${game.comments.map(comment => `<li class="list-group-item" 
+            id="comment-id-${comment.id}">${comment.content}
+            <button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button>
+            </li>`).join("")}
+        </ul>
     </div>
-  </div>`
+    `
 }
 
 addBtn.addEventListener('click', () => {
@@ -63,9 +80,25 @@ addBtn.addEventListener('click', () => {
     }
   })
 
+function handleSubmit(e) {
+  e.preventDefault()
+  debugger;
+  let newGame = {
+    title: e.target.title.value,
+    image: e.target.image.value,
+    release_date: e.target.release_year.value,
+    genre: e.target.genre.value
+  }
 
-
-    
-
-
+  fetch(GAMES_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({ game: newGame})
+  })
+  .then(resp => resp.json())
+  .then(gameCard)
+}
 

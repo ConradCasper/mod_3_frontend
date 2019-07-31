@@ -4,4 +4,16 @@ body {
   .starter-template {
 	padding: 3rem 1.5rem;
 	text-align: center;
+/* body {
+	display: grid;
+	grid-template-columns: 2fr 8fr
+} */
+
+.container {
+	padding: 1rem;
+	width: stretch;
+	height: auto;
+	display: none;
+	background: #515DA2;
+	opacity: .8;
   }

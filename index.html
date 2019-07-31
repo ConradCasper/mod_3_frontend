@@ -3,13 +3,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Mod 3 Project</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/index.css">
 </head>
 
 <body>
-   
+    <!-- <div class="row">
+        <div class="col-sm-9">
+        Level 1: .col-sm-9
+            <div class="row">
+                <div class="col-xs-8 col-sm-6">
+                Level 2: .col-xs-8 .col-sm-6
+                </div>
+                <div class="col-xs-4 col-sm-6">
+                Level 2: .col-xs-4 .col-sm-6
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    
+    <h1 style="text-align:center">Project Homepage</h1>
+    <p style='text-align:center' >Have a new game you'd like to add to our database? <button id='new-game-btn'>Add a new game!</button></p>
     <div class="container" id="form-container">
         <form id="add-game-form" style="">
           <h3>Add a New Game</h3>
@@ -18,14 +35,14 @@
           <br>
           <input type="text" name="image" value="" placeholder="Enter a game's image URL..." class="input-text">
           <br>
-          <input type="text" name="release-year" value="" placeholder="Enter a game's release year..." class="input-text">
+          <input type="text" name="release_year" value="" placeholder="Enter a game's release year..." class="input-text">
           <br>
           <input type="text" name="genre" value="" placeholder="Enter a game's genre..." class="input-text">
           <br>
           <input type="submit" name="submit" value="Create New Game" class="submit">
         </form>
     </div>
-    <p style='text-align:center' >Have a new game you'd like to add to our database? <button id='new-game-btn'>Add a new game!</button></p>
+    
     <div id="list-panel">
         <ul id="list">
         </ul>
