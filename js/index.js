@@ -72,8 +72,6 @@ function handleClick(e){
 
 function showMore(game){
     let id = game.id
-    
-    debugger;
 
     let showPanel = document.querySelector("#show-panel")
 
@@ -98,10 +96,10 @@ function showMore(game){
                 
             </p>
             <h6 class="card-text">Comments:</h6>
-            <form>
+            <form data-game-id="${game.id}">
                 <div class="form-group">
                     <label for="commentTextArea">Create New Comment</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     <button id="commentSubmit" type="submit">Submit Comment</button>
                 </div>
             </form>
@@ -151,6 +149,9 @@ function handleGameSubmit(e) {
 
 function handleCommentSubmit(e) {
   e.preventDefault()
+
+  debugger 
+
   console.log(e.target)
   console.log(e.target.comment.value)
   console.log(e.target.dataset.gameId)
