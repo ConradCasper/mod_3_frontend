@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", setUpPage)
 const GAMES_URL = `http://localhost:3000/api/v1/games/`
-const LIKES_URL = `http://localhost:3000/api/v1/likes`
-const COMMENTS_URL = `http://localhost:3000/api/v1/comments`
+const LIKES_URL = `http://localhost:3000/api/v1/likes/`
+const COMMENTS_URL = `http://localhost:3000/api/v1/comments/`
 document.addEventListener("click", handleClick)
 const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
+const addGameForm = document.getElementById("add-game-form")
+addGameForm.addEventListener("submit", handleSubmit)
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -33,7 +35,8 @@ function handleClick(e){
 function showMore(game){
     console.log("game", game)
     console.log("comments", game.comments)
-    console.log("likes", game.likes)
+    console.log("likes", game.likes.length)
+    console.log("platforms", game.platforms)
     let showPanel = document.querySelector("#show-panel")
     showPanel.innerHTML = ""
     showPanel.innerHTML = `
@@ -45,10 +48,9 @@ function showMore(game){
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item">Release Date: ${game.release_date}</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
+        ${game.comments.map(comment => `<li class="list-group-item">Comment: ${comment.content}</li>`)}
       <li class="list-group-item">Vestibulum at eros</li>
     </ul>
-    
     `
 }
 
@@ -63,9 +65,25 @@ addBtn.addEventListener('click', () => {
     }
   })
 
+function handleSubmit(e) {
+  e.preventDefault()
+  debugger;
+  let newGame = {
+    title: e.target.title.value,
+    image: e.target.image.value,
+    release_date: e.target.release_year.value,
+    genre: e.target.genre.value
+  }
 
-
-    
-
-
+  fetch(GAMES_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({ game: newGame})
+  })
+  .then(resp => resp.json())
+  .then(gameCard)
+}
 
