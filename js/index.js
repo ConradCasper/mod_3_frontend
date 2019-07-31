@@ -150,7 +150,7 @@ function handleGameSubmit(e) {
 function handleCommentSubmit(e) {
   e.preventDefault()
 
-  debugger 
+  
 
   console.log(e.target)
   console.log(e.target.comment.value)
