@@ -7,8 +7,10 @@ const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
 const addGameForm = document.getElementById("add-game-form")
-addGameForm.addEventListener("submit", handleSubmit)
-let commentSubmit = document.querySelector("#commentSubmit")
+
+addGameForm.addEventListener("submit", handleGameSubmit)
+document.addEventListener("submit", handleCommentSubmit)
+
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -71,6 +73,8 @@ function handleClick(e){
 function showMore(game){
     let id = game.id
     
+    debugger;
+
     let showPanel = document.querySelector("#show-panel")
 
     showPanel.innerHTML = `
@@ -78,7 +82,12 @@ function showMore(game){
         <img src=${game.image} class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${game.title}</h5>
+
             <p class="card-text"><h5>Genre:</h5> ${game.genre}</p>
+            <p class ="card-text">Platform(s): </p>
+              <ul class ="platform-list">
+                ${game.platforms.map(platform => `<li class="platform-li">${platform.name}</li>`)}
+              </ul>
             <p class="card-text"><h5>Release Year:</h5> ${game.release_date}</p>
             <p class="card-text"><h5>Description:</h5> ${game.description}</p>
             <p class ="card-text">
@@ -119,7 +128,7 @@ addBtn.addEventListener('click', () => {
     }
   })
 
-function handleSubmit(e) {
+function handleGameSubmit(e) {
   e.preventDefault()
   let newGame = {
     title: e.target.title.value,
@@ -140,3 +149,29 @@ function handleSubmit(e) {
   .then(gameCard)
 }
 
+function handleCommentSubmit(e) {
+  e.preventDefault()
+  console.log(e.target)
+  console.log(e.target.comment.value)
+  console.log(e.target.dataset.gameId)
+  
+  let commentList = document.getElementById("comment-list")
+  let newComment = {
+    content: e.target.comment.value,
+    game_id: e.target.dataset.gameId
+  }
+
+  fetch(COMMENTS_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({comment: newComment})
+  })
+  .then(resp => resp.json())
+  .then(comment => commentList.innerHTML += `<li class="list-group-item" id="comment-id-${comment.id}">${comment.content}<button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button></li>`)
+
+  e.target.comment.value = ""
+
+}
