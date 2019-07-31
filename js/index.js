@@ -6,6 +6,8 @@ document.addEventListener("click", handleClick)
 const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
+const addGameForm = document.getElementById("add-game-form")
+addGameForm.addEventListener("submit", handleSubmit)
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -40,7 +42,6 @@ function handleClick(e){
 
 function showMore(game){
     let id = game.id
-    
     
     let showPanel = document.querySelector("#show-panel")
     showPanel.innerHTML = ""
@@ -79,18 +80,25 @@ addBtn.addEventListener('click', () => {
     }
   })
 
+function handleSubmit(e) {
+  e.preventDefault()
+  debugger;
+  let newGame = {
+    title: e.target.title.value,
+    image: e.target.image.value,
+    release_date: e.target.release_year.value,
+    genre: e.target.genre.value
+  }
 
-  
-    
-      
-    
-    
-    
-    
-  
-
-
-    
-
-
+  fetch(GAMES_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({ game: newGame})
+  })
+  .then(resp => resp.json())
+  .then(gameCard)
+}
 
