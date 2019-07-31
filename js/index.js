@@ -38,18 +38,18 @@ function showMore(game){
     showPanel.innerHTML = ""
     showPanel.innerHTML = `
     <div data-game-id="${game.id}" class="card" style="width: 18rem;">
-    <img src=${game.image} class="card-img-top" alt="...">
     <div class="card-body">
+      <img src=${game.image} class="card-img-top" alt="...">
       <h5 class="card-title">${game.title}</h5>
-      <p class="card-text">Genre: ${game.genre}</p>
-    </div>
-    <ul class="list-group list-group-flush">
+      <h6 class="card-subtitle mb-2 text-muted">${game.genre}</h6>
+      <p class="card-text">${game.description}</p>
+      <ul class="list-group list-group-flush">
       <li class="list-group-item">Release Date: ${game.release_date}</li>
       <li class="list-group-item">Dapibus ac facilisis in</li>
       <li class="list-group-item">Vestibulum at eros</li>
     </ul>
-    
-    `
+    </div>
+  </div>`
 }
 
 addBtn.addEventListener('click', () => {
