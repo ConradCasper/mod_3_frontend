@@ -7,8 +7,10 @@ const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
 const addGameForm = document.getElementById("add-game-form")
+
 addGameForm.addEventListener("submit", handleGameSubmit)
 document.addEventListener("submit", handleCommentSubmit)
+
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -38,6 +40,33 @@ function handleClick(e){
             method: "DELETE"
         })
         
+    } else if (e.target.id == "likeBtn"){
+       let game_Id = parseInt(e.target.dataset.id)
+
+       let oldLikes = parseInt(document.querySelector("#likes").innerText)
+       let newLikes = oldLikes + 1
+       document.querySelector("#likes").innerText = newLikes
+
+       let body = {
+           game_id: game_Id
+       }
+
+       
+
+        fetch(LIKES_URL, {
+            method: "POST",
+            headers: {
+                "content-type":"application/json",
+                accept:"application/json"
+            },
+            body:JSON.stringify({
+                like: body
+            })
+
+        })
+        .then(res => res.json())
+        .then(json => console.log(json))
+
     }
 }
 
@@ -47,30 +76,42 @@ function showMore(game){
     debugger;
 
     let showPanel = document.querySelector("#show-panel")
-    showPanel.innerHTML = ""
+
     showPanel.innerHTML = `
     <div data-game-id="${game.id}" class="card" style="width: 18rem;">
         <img src=${game.image} class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${game.title}</h5>
-            <p class="card-text">Genre: ${game.genre}</p>
+
+            <p class="card-text"><h5>Genre:</h5> ${game.genre}</p>
             <p class ="card-text">Platform(s): </p>
-            <ul class ="platform-list">
-              ${game.platforms.map(platform => `<li class="platform-li">${platform.name}</li>`)}
-            </ul>
-            <p class="card-text">Release Year: ${game.release_date}</p>
-            <p class ="card-text">Likes: ${game.likes.length}</p>
+              <ul class ="platform-list">
+                ${game.platforms.map(platform => `<li class="platform-li">${platform.name}</li>`)}
+              </ul>
+            <p class="card-text"><h5>Release Year:</h5> ${game.release_date}</p>
+            <p class="card-text"><h5>Description:</h5> ${game.description}</p>
+            <p class ="card-text">
+                <h5>Likes: 
+                    <span id="likes">${game.likes.length}</span>
+                </h5>
+                <button id="likeBtn" data-id="${game.id}" type="button" class="btn btn-outline-info">Like</button> 
+                
+            </p>
             <h6 class="card-text">Comments:</h6>
-            <div class="form-group">
-              <form data-game-id="${game.id}" id="add-comment-form" class="comment-form">
-                <label for="exampleFormControlTextarea1">Create New Comment</label>
-                <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                <button type="submit">Submit Comment</button>
-              </form
-            </div>
+            <form>
+                <div class="form-group">
+                    <label for="commentTextArea">Create New Comment</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <button id="commentSubmit" type="submit">Submit Comment</button>
+                </div>
+            </form>
         </div>
         <ul id="comment-list" class="list-group list-group-flush">
-            ${game.comments.map(comment => `<li class="list-group-item" id="comment-id-${comment.id}">${comment.content}<button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button></li>`).join("")}
+            ${game.comments.map(comment => `
+            <li class="list-group-item" 
+            id="comment-id-${comment.id}">${comment.content}
+            <button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button>
+            </li>`).join("")}
         </ul>
     </div>
     `
@@ -89,7 +130,6 @@ addBtn.addEventListener('click', () => {
 
 function handleGameSubmit(e) {
   e.preventDefault()
-  debugger;
   let newGame = {
     title: e.target.title.value,
     image: e.target.image.value,

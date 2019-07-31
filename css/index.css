@@ -17,3 +17,8 @@ body {
 	background: #515DA2;
 	opacity: .8;
   }
+
+  .card {
+      position: absolute;
+      right: 300px;
+  }
