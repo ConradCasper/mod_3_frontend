@@ -7,7 +7,8 @@ const addBtn = document.getElementById("new-game-btn")
 const formContainer = document.getElementById('form-container')
 let addGame = false
 const addGameForm = document.getElementById("add-game-form")
-addGameForm.addEventListener("submit", handleSubmit)
+addGameForm.addEventListener("submit", handleGameSubmit)
+document.addEventListener("submit", handleCommentSubmit)
 
 function setUpPage(){
     fetch(GAMES_URL)
@@ -43,6 +44,8 @@ function handleClick(e){
 function showMore(game){
     let id = game.id
     
+    debugger;
+
     let showPanel = document.querySelector("#show-panel")
     showPanel.innerHTML = ""
     showPanel.innerHTML = `
@@ -51,19 +54,23 @@ function showMore(game){
         <div class="card-body">
             <h5 class="card-title">${game.title}</h5>
             <p class="card-text">Genre: ${game.genre}</p>
+            <p class ="card-text">Platform(s): </p>
+            <ul class ="platform-list">
+              ${game.platforms.map(platform => `<li class="platform-li">${platform.name}</li>`)}
+            </ul>
             <p class="card-text">Release Year: ${game.release_date}</p>
             <p class ="card-text">Likes: ${game.likes.length}</p>
             <h6 class="card-text">Comments:</h6>
             <div class="form-group">
+              <form data-game-id="${game.id}" id="add-comment-form" class="comment-form">
                 <label for="exampleFormControlTextarea1">Create New Comment</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <button type="submit">Submit Comment</button>
+              </form
             </div>
         </div>
         <ul id="comment-list" class="list-group list-group-flush">
-            ${game.comments.map(comment => `<li class="list-group-item" 
-            id="comment-id-${comment.id}">${comment.content}
-            <button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button>
-            </li>`).join("")}
+            ${game.comments.map(comment => `<li class="list-group-item" id="comment-id-${comment.id}">${comment.content}<button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button></li>`).join("")}
         </ul>
     </div>
     `
@@ -80,7 +87,7 @@ addBtn.addEventListener('click', () => {
     }
   })
 
-function handleSubmit(e) {
+function handleGameSubmit(e) {
   e.preventDefault()
   debugger;
   let newGame = {
@@ -102,3 +109,29 @@ function handleSubmit(e) {
   .then(gameCard)
 }
 
+function handleCommentSubmit(e) {
+  e.preventDefault()
+  console.log(e.target)
+  console.log(e.target.comment.value)
+  console.log(e.target.dataset.gameId)
+  
+  let commentList = document.getElementById("comment-list")
+  let newComment = {
+    content: e.target.comment.value,
+    game_id: e.target.dataset.gameId
+  }
+
+  fetch(COMMENTS_URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json"
+    },
+    body: JSON.stringify({comment: newComment})
+  })
+  .then(resp => resp.json())
+  .then(comment => commentList.innerHTML += `<li class="list-group-item" id="comment-id-${comment.id}">${comment.content}<button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button></li>`)
+
+  e.target.comment.value = ""
+
+}
