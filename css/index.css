@@ -1,5 +1,6 @@
 body {
 	padding-top: 5rem;
+	background: #00BFFF;
   }
   /* .starter-template {
 	padding: 3rem 1.5rem;
@@ -10,11 +11,11 @@ body {
 } */
 
 .container {
-	padding: 1rem;
+	/* padding: 1rem; */
 	width: stretch;
 	height: auto;
-	display: none;
-	background: #515DA2;
+	/* display: none; */
+	background:#F8F8FF;
 	opacity: .8;
   }
 
@@ -22,3 +23,8 @@ body {
       position: absolute;
       right: 300px;
   }
+
+  .input-text{
+	/* font-size: 100px; // for say a select */
+	width: 400px;
+	}
