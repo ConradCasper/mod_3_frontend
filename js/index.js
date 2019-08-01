@@ -74,7 +74,7 @@ function showMore(game){
     let showPanel = document.querySelector("#show-panel")
 
     showPanel.innerHTML = `
-    <div data-game-id="${game.id}" class="card" style="width: 18rem;">
+    <div data-game-id="${game.id}" class="card" style="width: 30rem;">
         <img src=${game.image} class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${game.title}</h5>
