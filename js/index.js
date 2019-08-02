@@ -81,9 +81,9 @@ function showMore(game){
 
             <p class="card-text"><h5>Genre:</h5> ${game.genre}</p>
             <p class ="card-text">Platform(s): </p>
-              <ul class ="platform-list">
-                ${game.platforms.map(platform => `<li class="platform-li">${platform.name}</li>`).join("")}
-              </ul>
+            
+                ${game.platforms.map(platform => `<p class="platform-li">&#127918  ${platform.name}</p>`).join("")}
+          
             <p class="card-text"><h5>Release Year:</h5> ${game.release_date}</p>
             <p class="card-text"><h5>Description:</h5> ${game.description}</p>
             <p class ="card-text">
@@ -105,7 +105,7 @@ function showMore(game){
         <ul id="comment-list" class="list-group list-group-flush">
             ${game.comments.map(comment => `
             <li class="list-group-item" 
-            id="comment-id-${comment.id}">${comment.content}
+            id="comment-id-${comment.id}">&#10147  ${comment.content}
             <button class = "deleteCmntBtn" data-id = "${comment.id}">Delete</button>
             </li>`).join("")}
         </ul>
