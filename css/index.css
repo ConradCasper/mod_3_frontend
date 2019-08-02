@@ -28,10 +28,23 @@ body {
 	width: 400px;
 }
 
+.header-text {
+	color: #FAF7F6;
+}
+
+#info-line {
+	color: darkslateblue
+}
+
+#new-game-header {
+	color: #FAF7F6;
+}
+
  .card {
  position: relative;
  width: 70%;
- float: center;
+ float: right;
+ right: 300px;
  height: fixed;
  border: 3px solid  darkslateblue;
  z-index: 1010101010
